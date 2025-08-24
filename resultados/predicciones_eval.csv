@@ -1,0 +1,6 @@
+title,abstract,group,group_predicted
+Advances in Cardiovascular Surgery,This paper discusses new methods in heart surgery with reduced risks.,['Cardiovascular'],['Cardiovascular']
+Neurological Outcomes after Stroke,Stroke patients show improved recovery using new therapies.,['Neurological'],"['Cardiovascular', 'Oncological']"
+Liver and Kidney Function in Critical Care,Critical care patients often face complications in liver and kidney.,['Hepatorenal'],[]
+Recent Trends in Oncology Research,Oncology research highlights new immunotherapy drugs.,['Oncological'],['Oncological']
+Multidisciplinary Approaches in Medicine,Integrative approaches across specialties improve patient outcomes.,"['Cardiovascular','Oncological','Neurological']","['Cardiovascular', 'Oncological']"
