@@ -1,96 +1,41 @@
-# src/train.py
 import pandas as pd
-import argparse
-import os
+import joblib
+from modelo import ModeloMultietiqueta
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.multiclass import OneVsRestClassifier
-from sklearn.metrics import f1_score, classification_report
-from sklearn.preprocessing import MultiLabelBinarizer
-import joblib
+from sklearn.multioutput import MultiOutputClassifier
 
-# ----------------------------
-# Funciones
-# ----------------------------
+# Clase para el modelo multi-etiqueta
+class ModeloMultietiqueta:
+    def __init__(self, modelo, categorias):
+        self.modelo = modelo
+        self.categorias = categorias
 
-def cargar_datos(ruta_csv):
-    # Cargar CSV separado por ;
-    df = pd.read_csv(ruta_csv, sep=';')
-    
-    # Convertir grupos a listas
-    df['group_list'] = df['group'].apply(lambda x: x.split('|') if isinstance(x, str) else [])
-    
-    return df
+# Cargar datos
+df = pd.read_csv('data/raw/DatabaseBio.csv', sep=';')
 
-def preparar_datos(df):
-    # Texto combinado: title + abstract
-    df['texto_combinado'] = df['title'].fillna('') + ' ' + df['abstract'].fillna('')
-    
-    X = df['texto_combinado'].values
-    
-    # Binarizar etiquetas
-    mlb = MultiLabelBinarizer()
-    y = mlb.fit_transform(df['group_list'])
-    
-    return X, y, mlb
+# Separar features y etiquetas
+df['group'] = df['group'].fillna('')
+X = df['title'].astype(str) + ' ' + df['abstract'].astype(str)
+y = df['group'].str.get_dummies(sep='|')
 
-def entrenar_modelo(X_train, y_train):
-    # Vectorizador TF-IDF
-    vectorizador = TfidfVectorizer(max_features=5000, ngram_range=(1,2))
-    
-    # Random Forest multietiqueta
-    modelo = OneVsRestClassifier(RandomForestClassifier(n_estimators=200, random_state=42))
-    
-    # Pipeline vectorizador + clasificador
-    X_train_tfidf = vectorizador.fit_transform(X_train)
-    modelo.fit(X_train_tfidf, y_train)
-    
-    return modelo, vectorizador
+categorias = list(y.columns)
 
-def evaluar_modelo(modelo, vectorizador, X_test, y_test, mlb):
-    X_test_tfidf = vectorizador.transform(X_test)
-    y_pred = modelo.predict(X_test_tfidf)
-    
-    print("F1 Score (Weighted):", f1_score(y_test, y_pred, average='weighted', zero_division=0))
-    print("F1 Score (Macro):", f1_score(y_test, y_pred, average='macro', zero_division=0))
-    print("F1 Score (Micro):", f1_score(y_test, y_pred, average='micro', zero_division=0))
-    print("\nReporte de Clasificación:")
-    print(classification_report(y_test, y_pred, target_names=mlb.classes_, zero_division=0))
+# Vectorización
+vectorizer = TfidfVectorizer(max_features=5000)
+X_vect = vectorizer.fit_transform(X)
 
-# ----------------------------
-# Main
-# ----------------------------
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--input", required=True, help="Ruta CSV de datos")
-    parser.add_argument("--output", required=True, help="Ruta para guardar modelo entrenado")
-    args = parser.parse_args()
-    
-    # Crear carpeta de modelos si no existe
-    os.makedirs(os.path.dirname(args.output), exist_ok=True)
-    
-    # Cargar datos
-    df = cargar_datos(args.input)
-    print(f"Datos cargados: {len(df)} registros")
-    
-    # Preparar datos
-    X, y, mlb = preparar_datos(df)
-    
-    # Train/test split con stratify
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42, stratify=y
-    )
-    print(f"Split realizado: {len(X_train)} train, {len(X_test)} test")
-    
-    # Entrenar modelo
-    print("Entrenando modelo OneVsRest con Random Forest...")
-    modelo, vectorizador = entrenar_modelo(X_train, y_train)
-    
-    # Guardar modelo y vectorizador
-    joblib.dump({'modelo': modelo, 'vectorizador': vectorizador, 'mlb': mlb}, args.output)
-    print(f"Modelo guardado en: {args.output}")
-    
-    # Evaluar modelo
-    print("Evaluando modelo en conjunto de test...")
-    evaluar_modelo(modelo, vectorizador, X_test, y_test, mlb)
+# Split
+X_train, X_test, y_train, y_test = train_test_split(X_vect, y, test_size=0.2, random_state=42)
+
+# Modelo Random Forest multi-etiqueta
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+multi_rf = MultiOutputClassifier(rf)
+multi_rf.fit(X_train, y_train)
+
+# Guardar modelo completo con vectorizer y categorías
+modelo_final = ModeloMultietiqueta(modelo=multi_rf, categorias=categorias)
+joblib.dump({'modelo': modelo_final, 'vectorizer': vectorizer}, 'modelos/modelo_entrenado.pkl')
+
+print("Modelo entrenado y guardado correctamente.")
