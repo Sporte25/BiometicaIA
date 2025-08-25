@@ -1,8 +1,13 @@
 # src/predict.py
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 import pandas as pd
 import numpy as np
 import joblib
-from preprocesamiento import PreprocesadorTexto, combinar_textos
+#from preprocesamiento import PreprocesadorTexto, combinar_textos
+from src.preprocesamiento import PreprocesadorTexto, combinar_textos
+
 
 
 class ClasificadorArticulosMedicos:
@@ -93,7 +98,7 @@ class ClasificadorArticulosMedicos:
         y_pred = np.array(y_pred)
         
         # Evaluar
-        from evaluacion import evaluar_modelo_multietiqueta
+        from src.evaluacion import evaluar_modelo_multietiqueta
         resultados = evaluar_modelo_multietiqueta(y_true, y_pred, self.categorias)
         
         return df_con_predicciones, resultados

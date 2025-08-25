@@ -1,10 +1,9 @@
 # src/evaluacion.py
 from sklearn.metrics import f1_score, accuracy_score, classification_report
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import multilabel_confusion_matrix, confusion_matrix
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-import os
 
 def evaluar_modelo_multietiqueta(y_true, y_pred, categorias):
     """
@@ -47,17 +46,11 @@ def evaluar_modelo_multietiqueta(y_true, y_pred, categorias):
         axes[i].set_ylabel('Real')
     
     plt.tight_layout()
-    
-    # Crear carpeta resultados en la raíz
-    resultados_dir = os.path.join(os.path.dirname(__file__), "../resultados")
-    os.makedirs(resultados_dir, exist_ok=True)
-    
-    # Guardar archivo
-    path_guardado = os.path.join(resultados_dir, "matrices_confusion.png")
-    plt.savefig(path_guardado)
-    plt.close(fig)
-
-    print(f"\n✅ Imagen guardada en: {os.path.abspath(path_guardado)}")
+    #plt.savefig('../resultados/matrices_confusion.png')
+    import os
+    os.makedirs("../resultados", exist_ok=True)
+    plt.savefig("../resultados/matrices_confusion.png")
+    plt.show()
     
     return {
         'f1_weighted': f1_weighted,

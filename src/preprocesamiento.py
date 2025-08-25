@@ -1,4 +1,4 @@
-#!/home/codespace/.python/current/bin/python
+# src/preprocesamiento.py
 import re
 import nltk
 from nltk.corpus import stopwords
@@ -19,7 +19,7 @@ class PreprocesadorTexto:
         try:
             self.nlp = spacy.load("en_core_web_sm")
         except:
-            # Si no está instalado, se instala
+            # Si no está instalado, lo instalamos
             import os
             os.system("python -m spacy download en_core_web_sm")
             self.nlp = spacy.load("en_core_web_sm")
