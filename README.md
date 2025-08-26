@@ -56,7 +56,6 @@ This project implements a multi-label classification system for biomedical artic
 
 ## License
 - MIT License
-- 
 
 ## Installation
 
