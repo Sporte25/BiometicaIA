@@ -1,0 +1,10 @@
+title;abstract
+"Application of machine learning missing data imputation techniques in clinical decision making: taking the discharge assessment of patients with spontaneous supratentorial intracerebral hemorrhage as an example",
+"There are often many missing values in medical data, which directly affect the accuracy 
+of clinical decision making. Discharge assessment is an important part 
+of clinical decision making. Taking the discharge assessment of patients with spontaneous 
+supratentorial intracerebral hemorrhage as an example, this study adopted the missing data processing 
+evaluation criteria more suitable for clinical decision making, aiming at systematically exploring the 
+performance and applicability of single machine learning algorithms and ensemble learning (EL) under 
+different data missing scenarios, as well as whether they had more advantages than traditional methods, 
+so as to provide basis and reference for the selection of suitable missing data processing method in practical clinical decision making."

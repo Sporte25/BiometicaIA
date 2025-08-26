@@ -1,0 +1,6 @@
+title;abstract;group_true
+Machine learning for skin lesion detection;We trained a convolutional neural network to classify skin lesions using dermoscopic images.;dermatology
+Mental health trends in adolescents;Survey data from 5,000 teenagers reveal rising anxiety and depression linked to social media use.;psychiatry
+Renal transplant outcomes in diabetics;This study compares graft survival rates in diabetic vs. non-diabetic kidney transplant recipients.;nephrology
+Immunotherapy in melanoma patients;Checkpoint inhibitors were evaluated in advanced melanoma cases with promising survival rates.;oncology
+Sleep apnea and cardiovascular risk;Polysomnography data show strong correlation between sleep apnea severity and hypertension.;pulmonology
