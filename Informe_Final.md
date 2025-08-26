@@ -26,6 +26,7 @@ Desarrollar una solución que clasifique artículos médicos en múltiples categ
 ## Visualización V0
 - Se desarrolló una interfaz interactiva que permite cargar archivos CSV, realizar predicciones,
 y visualizar la matriz de confusión, la distribución de clases y las características más relevantes del modelo.
+- **Nota** : se debe aclarar que en apartado de la entrega final se agregó un link de V0 (https://v0-text-classification-dashboard.vercel.app/), pero este es solo fue un dashboard de ejemplo ya que no se alcanzó a integrar con la aplicación.
 
 ## Reflexiones
 
