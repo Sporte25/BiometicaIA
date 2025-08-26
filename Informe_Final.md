@@ -6,7 +6,7 @@
 ```markdown
 # Informe Final — BiometicaIA
 
-## 🧩 Descripción del reto
+## Descripción del reto
 
 Desarrollar una solución que clasifique artículos médicos en múltiples categorías, permitiendo carga de archivos CSV y visualización de componentes.
 
